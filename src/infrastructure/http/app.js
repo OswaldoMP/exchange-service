@@ -51,7 +51,15 @@ function createExpressApp({
 
   const authMiddlewares = createAuthMiddlewares({ repository });
 
-  app.use('/api/health', createHealthRouter());
+  const healthRouter = createHealthRouter();
+  app.use('/api/health', healthRouter);
+  app.get('/', (_req, res) => {
+    res.status(200).json({
+      status: 'ok',
+      service: 'exchange-service',
+      event: 'Intercambio Navideño 2026',
+    });
+  });
   app.use('/api/auth', createAuthRouter({ authUseCases, resolveAppUrl }));
   app.use(
     '/api/participants',

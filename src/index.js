@@ -47,10 +47,19 @@ function bootstrap(overrides = {}) {
 }
 
 if (require.main === module) {
-  const { app, repository, config } = bootstrap();
+  let app;
+  let repository;
+  let config;
+  try {
+    ({ app, repository, config } = bootstrap());
+  } catch (err) {
+    console.error('[exchange-service] Error fatal al iniciar:', err);
+    process.exit(1);
+  }
+
   const server = app.listen(config.port, config.host, () => {
     console.log(
-      `[exchange-service] Express + SQLite escuchando en http://${config.host}:${config.port}`
+      `[exchange-service] Express + SQLite escuchando en http://${config.host}:${config.port} (db: ${config.dbPath})`
     );
     if (config.admin) {
       console.log(
