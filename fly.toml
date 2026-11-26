@@ -1,0 +1,45 @@
+# Fly.io configuration optimized for Free Plan + single-node SQLite
+# Cambia "app" por un nombre único en tu cuenta de Fly.io.
+app = "EXCHANGE-SERVICE"
+primary_region = "dfw"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  HOST = "0.0.0.0"
+  PORT = "3000"
+  DB_PATH = "/data/exchange-2026.sqlite"
+  EMAIL_ENABLED = "false"
+  CORS_ORIGINS = "*"
+
+# Volumen persistente de 1 GB (~$0.15 USD/mes, dentro del crédito gratuito de $5 USD/mes)
+# IMPORTANTE: Con SQLite usa SIEMPRE 1 sola máquina (--ha=false) para evitar bases duplicadas.
+[mounts]
+  source = "exchange_data"
+  destination = "/data"
+  initial_size = "1gb"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  # Detiene la máquina automáticamente cuando no hay tráfico y la despierta al recibir una petición
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+  [[http_service.checks]]
+    interval = "60s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/api/health"
+
+# Máquina mínima (shared-cpu-1x / 256MB) para maximizar la capa gratuita
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1

@@ -1,0 +1,19 @@
+{
+  "name": "exchange-service",
+  "version": "1.0.0",
+  "description": "Backend Node.js + Express + SQLite (Hexagonal Architecture) para Intercambio Navideño 2026",
+  "private": true,
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "node --test tests/api.test.mjs"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}
