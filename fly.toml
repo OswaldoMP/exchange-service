@@ -1,6 +1,6 @@
 # Fly.io configuration optimized for Free Plan + single-node SQLite
 # Cambia "app" por un nombre único en tu cuenta de Fly.io.
-app = "EXCHANGE-SERVICE"
+app = "exchange-service"
 primary_region = "dfw"
 
 [build]
